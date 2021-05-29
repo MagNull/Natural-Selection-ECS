@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da652c3fa94b43deb4eadae57069db10, type: 3}
+  m_Name: Configs
+  m_EditorClassIdentifier: 
+  EnvironmentPlane: {fileID: 2995726524691472012, guid: 469e0a9d9fe45fb4c9ef3b6b8ced30ea, type: 3}
+  StartPersonsAmount: 50
+  StartPersonsSpeed: 10
+  NoneActiveStartPerson: 500
+  PersonPrefab: {fileID: 8837867590515605212, guid: 9b7206eb16266d54cb4c8dbc415c180b, type: 3}
+  FoodToReplicate: 4
+  PersonNutritionalValue: 2
+  MutationChance: 10
+  FoodPrefab: {fileID: 9185688396838771284, guid: 68b411f1b21a1924e9832d510a63b37f, type: 3}
+  FoodSpawnAmount: 200
+  FoodSpawnRate: 1
+  NoneActiveStartFood: 500
+  DieTickRate: 1
+  ReplicateTickRate: 2
+  FoodSpeedCoefficient: 0.1
+  SpeedMutationFault: 5
+  SizeSpeedCoefficient: 2
+  SizeMutationFault: 0.35
+  FoodSizeCoefficient: 7
+  SizeThresholdToEat: 1.2
+  PredatorMutationChance: 1
+  FoodPerPoisonous: 1
