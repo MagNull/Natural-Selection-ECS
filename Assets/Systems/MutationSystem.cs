@@ -25,7 +25,7 @@ namespace Systems
 
         private void SpeedMutation(EcsEntity entity)
         {
-            bool roll = Random.value < (float)_configs.MutationChance / 100;
+            bool roll = Random.value < _configs.MutationChance / 100;
             if (roll)
             {
                 float delta = (Random.value - Random.value);
@@ -61,41 +61,44 @@ namespace Systems
 
         private void PredatorMutation(EcsEntity entity)
         {
-            bool roll = Random.value < (float)_configs.PredatorMutationChance / 100;
+            bool roll = Random.value < _configs.PredatorMutationChance / 100;
             if (roll)
             {
-                entity.Replace(new PredatorComponent());
+                entity.Replace(new PredatorComponent
+                {
+                    Rapacity = 0,
+                    Predatoriness = .1f,
+                    PredatorExperience = 0
+                });
                 entity.Get<ViewComponent>().View.GetComponent<MeshRenderer>().material.color = Color.black;
-                entity.Get<PersonFoodComponent>().FoodAmount = 3;
+                entity.Get<PersonFoodComponent>().FoodAmount = 2 + _configs.PredatoryFoodNeed;
             }
         }
 
         private void PoisonousMutation(EcsEntity entity)
         {
-            bool roll = Random.value < (float)_configs.MutationChance / 100;
+            bool roll = Random.value < _configs.MutationChance / 100;
             if (roll)
             {
                 if (!entity.Has<PoisonousComponent>())
                 {
                     entity.Replace(new PoisonousComponent
                     {
-                        Toxicity = Random.Range(0,1)
+                        Toxicity = Random.Range(.1f,1f)
                     });
                     entity.Get<PersonFoodComponent>().FoodAmount = 3;
-                    Color newColor = entity.Get<ViewComponent>().View.GetComponent<MeshRenderer>().material.color;
-                    newColor.g = .5f * entity.Get<PoisonousComponent>().Toxicity;
-                    entity.Get<ViewComponent>().View.GetComponent<MeshRenderer>().material.color = newColor;
                 }
                 else
                 {
                     float bonusToxicity = (Random.value - Random.value);
                     ref var toxicity = ref entity.Get<PoisonousComponent>().Toxicity;
-                    toxicity += bonusToxicity;
+                    toxicity += bonusToxicity * _configs.PoisonousMutationFault;
                     toxicity = Mathf.Clamp(toxicity, 0, 1);
-                    Color newColor = entity.Get<ViewComponent>().View.GetComponent<MeshRenderer>().material.color;
-                    newColor.g = .5f * toxicity;
-                    entity.Get<ViewComponent>().View.GetComponent<MeshRenderer>().material.color = newColor;
                 }
+                Color newColor = entity.Get<ViewComponent>().View.GetComponent<MeshRenderer>().material.color;
+                newColor.g = .5f + .5f * entity.Get<PoisonousComponent>().Toxicity;
+                newColor.g = Mathf.Clamp(newColor.g, 0.5f, 2);
+                entity.Get<ViewComponent>().View.GetComponent<MeshRenderer>().material.color = newColor;
             }
         }
     }

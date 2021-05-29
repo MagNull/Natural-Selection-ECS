@@ -10,13 +10,11 @@ using UnityEngine;
 
 namespace Systems
 {
-    public class FindPlantFoodSystem : IEcsRunSystem
+    public class FindHerbivoreFoodSystem : IEcsRunSystem
     {
-        private EcsFilter<MoveComponent, ViewComponent>.Exclude<PredatorComponent> _persons;
-        private EcsFilter<FoodComponent, ViewComponent> _food;
-        
-        
-            
+        private EcsFilter<HerbivoreСomponent,MoveComponent, ViewComponent>.Exclude<PredatorComponent> _persons;
+        private EcsFilter<FoodComponent, ViewComponent>.Exclude<PersonFoodComponent> _food;
+
         public void Run()
         {
             List<Vector3> personsPositions = new List<Vector3>();
@@ -47,7 +45,7 @@ namespace Systems
             List<Vector3> foodPositions = new List<Vector3>();
             foreach (var f in _food)
             {
-                if (_food.Get2(f).View.activeSelf && !_food.GetEntity(f).Has<PersonFoodComponent>()) foodPositions.Add(_food.Get2(f).View.transform.position);
+                if (_food.Get2(f).View.activeSelf) foodPositions.Add(_food.Get2(f).View.transform.position);
             }
             
             List<Vector3> directions = FindNearest(personsPositions.ToNativeArray(Allocator.TempJob), foodPositions.ToNativeArray(Allocator.TempJob));

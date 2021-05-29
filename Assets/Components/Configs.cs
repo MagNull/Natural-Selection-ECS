@@ -15,7 +15,7 @@ namespace Components
          public GameObject PersonPrefab;
          public byte FoodToReplicate;
          public byte PersonNutritionalValue;
-         public byte MutationChance;
+         public float MutationChance;
          
          [Header("Food Configs")]
          public GameObject FoodPrefab;
@@ -38,9 +38,15 @@ namespace Components
          public float SizeThresholdToEat;
 
          [Header("Predator Mutation Configs")] 
-         public int PredatorMutationChance;
+         public float PredatorMutationChance;
+         public float PredatoryFoodNeed;
+         public float PlantMeatRatioCheckPeriod;
+         public float RatioToChangeRation;
+         public float KillsToBecamePredator;
 
          [Header("Poisonous Mutation Configs")] 
          public float FoodPerPoisonous;
+         public float PoisonousMutationFault;
+         public float KillPoisonThreshold;
     }
 }

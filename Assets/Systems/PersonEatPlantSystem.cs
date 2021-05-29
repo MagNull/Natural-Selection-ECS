@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Systems
 {
-    public class PersonEatFoodSystem : IEcsRunSystem
+    public class PersonEatPlantSystem : IEcsRunSystem
     {
         private EcsFilter<CollusionComponent> _filter;
         private EcsWorld _world;
@@ -18,7 +18,7 @@ namespace Systems
                 
                 
                 if (_filter.Get1(e).Entity1.Has<PersonFoodComponent>()
-                    && !_filter.Get1(e).Entity1.Has<PredatorComponent>()
+                    && _filter.Get1(e).Entity1.Has<HerbivoreСomponent>()
                     && _filter.Get1(e).Entity2.Has<FoodComponent>()
                     && !_filter.Get1(e).Entity2.Has<PersonFoodComponent>())
                 {
@@ -29,6 +29,7 @@ namespace Systems
 
                 personEntity.Get<PersonFoodComponent>().FoodAmount +=
                     foodEntity.Get<FoodComponent>().NutritionalValue;
+                personEntity.Get<FoodsAverage>().PlantAverage += foodEntity.Get<FoodComponent>().NutritionalValue;
                 foodEntity.Replace(new DestroyedComponent());
             }
         }

@@ -21,7 +21,7 @@ MonoBehaviour:
   PersonNutritionalValue: 2
   MutationChance: 10
   FoodPrefab: {fileID: 9185688396838771284, guid: 68b411f1b21a1924e9832d510a63b37f, type: 3}
-  FoodSpawnAmount: 200
+  FoodSpawnAmount: 300
   FoodSpawnRate: 1
   NoneActiveStartFood: 500
   DieTickRate: 1
@@ -33,4 +33,7 @@ MonoBehaviour:
   FoodSizeCoefficient: 7
   SizeThresholdToEat: 1.2
   PredatorMutationChance: 1
+  PredatoryFoodNeed: 3
   FoodPerPoisonous: 1
+  PoisonousMutationFault: 0.2
+  KillPoisonThreshold: 0.5

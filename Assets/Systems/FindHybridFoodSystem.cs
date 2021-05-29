@@ -3,19 +3,18 @@ using System.Linq;
 using Components;
 using Jobs;
 using Leopotam.Ecs;
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
 
 namespace Systems
 {
-    public class FindAnimalFoodSystem : IEcsRunSystem
+    public class FindHybridFoodSystem : IEcsRunSystem
     {
-        private EcsFilter<MoveComponent, ViewComponent, PredatorComponent> _persons;
-        private EcsFilter<PersonFoodComponent, ViewComponent> _food;
+        private EcsFilter<PredatorComponent, HerbivoreСomponent, ViewComponent> _persons;
+        private EcsFilter<FoodComponent, ViewComponent> _food;
         
-        
-            
         public void Run()
         {
             List<Vector3> personsPositions = new List<Vector3>();
@@ -32,7 +31,7 @@ namespace Systems
             {
                 if (_food.Get2(f).View.activeSelf) foodPositions.Add(_food.Get2(f).View.transform.position);
             }
-
+            
             foodPositions = foodPositions.Where(x => !personsPositions.Contains(x)).ToList();
             
             List<Vector3> directions = FindNearest(personsPositions.ToNativeArray(Allocator.TempJob), foodPositions.ToNativeArray(Allocator.TempJob));
