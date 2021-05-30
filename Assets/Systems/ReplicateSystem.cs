@@ -37,11 +37,28 @@ namespace Systems
                     person.transform.position = parentView.transform.position - parentView.transform.forward * 1.5f;
                     person.gameObject.GetComponent<MeshRenderer>().material =
                         parentView.GetComponent<MeshRenderer>().material;
+                    _filter.GetEntity(i).Get<NoReplicateTimeComponent>().Time = 0;
+                    
                     var entity = _filter.GetEntity(i).Copy();
-                    entity.Replace(new ViewComponent {View = person.gameObject});
+                    
                     entity.Get<MoveComponent>().Rigidbody = person.GetComponent<Rigidbody>();
                     entity.Get<PersonFoodComponent>().FoodAmount = 2;
+                    
                     entity.Replace(new BornComponent());
+                    entity.Replace(new ViewComponent {View = person.gameObject});
+
+                    if (entity.Has<PredatorComponent>())
+                    {
+                        person.transform.GetChild(0).gameObject.SetActive(true);
+                        person.transform.GetChild(0).localScale =
+                            Vector3.one * entity.Get<PredatorComponent>().Predatoriness;
+                        entity.Get<PersonFoodComponent>().FoodAmount = 2 + entity.Get<PredatorComponent>().Rapacity;
+                    }
+                    else
+                    {
+                        person.transform.GetChild(0).gameObject.SetActive(false);
+                    }
+                    
                     person.Link(entity);
                     person.gameObject.SetActive(true);
                 }

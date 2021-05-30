@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Jobs
 {
     [BurstCompile]
-    public struct FindNearestJob : IJobParallelFor
+    public struct FindNearestPlantJob : IJobParallelFor
     {
         [ReadOnly]
         public NativeArray<Vector3> PersonsPositions;

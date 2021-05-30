@@ -46,8 +46,9 @@ namespace Systems
                 });
                 person.GetComponent<LinkedEntity>().Link(entity);
                 entity.Replace(new PersonFoodComponent {FoodAmount = 1});
-                entity.Replace(new FoodsAverage());
+                entity.Replace(new MeatFoodComponent());
                 entity.Replace(new HerbivoreСomponent());
+                entity.Replace(new NoReplicateTimeComponent());
                 
                 person.transform.position = position;
                 person.SetActive(true);

@@ -37,12 +37,12 @@ namespace Components
          public float FoodSizeCoefficient;
          public float SizeThresholdToEat;
 
-         [Header("Predator Mutation Configs")] 
-         public float PredatorMutationChance;
-         public float PredatoryFoodNeed;
+         [Header("Predator Mutation Configs")]
          public float PlantMeatRatioCheckPeriod;
          public float RatioToChangeRation;
-         public float KillsToBecamePredator;
+         public float TimeToBecamePredator;
+         public float KillsToBecameOnlyCarnivorous;
+         public float RapacityPerKill;
 
          [Header("Poisonous Mutation Configs")] 
          public float FoodPerPoisonous;

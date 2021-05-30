@@ -5,7 +5,7 @@ namespace Systems
 {
     public class FromPlantToMeatChangeSystem : IEcsInitSystem
     {
-        private EcsFilter<HerbivoreСomponent, PredatorComponent, FoodsAverage> _filter;
+        private EcsFilter<HerbivoreСomponent, PredatorComponent> _filter;
         private Configs _configs;
         private EcsWorld _world;
 
@@ -26,7 +26,7 @@ namespace Systems
             foreach (var i in _filter)
             {
                 var entity = _filter.GetEntity(i);
-                var foodsAverage = entity.Get<FoodsAverage>();
+                ref var foodsAverage = ref entity.Get<FoodsAverage>();
                 if (foodsAverage.MeatAverage / foodsAverage.PlantAverage >= _configs.RatioToChangeRation)
                 {
                     entity.Del<HerbivoreСomponent>();

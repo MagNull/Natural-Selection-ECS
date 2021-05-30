@@ -32,7 +32,8 @@ namespace Systems
                 //                   - _configs.FoodSizeCoefficient + 1;
                 float fromPoisonous = _filter.GetEntity(i).Has<PoisonousComponent>() ? 
                     _configs.FoodPerPoisonous * _filter.GetEntity(i).Get<PoisonousComponent>().Toxicity : 0;
-                float fromPredatory = 0;//_filter.GetEntity(i).Has<PredatorComponent>() ? _configs.PredatoryFoodNeed : 0;
+                float fromPredatory = 
+                    _filter.GetEntity(i).Has<PredatorComponent>() ? _filter.GetEntity(i).Get<PredatorComponent>().Rapacity : 0;
                 _filter.Get1(i).FoodAmount -= fromPredatory + fromSpeed + fromPoisonous;
 
                 if (_filter.Get1(i).FoodAmount <= 0) _filter.GetEntity(i).Replace(new DestroyedComponent());

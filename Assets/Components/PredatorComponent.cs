@@ -2,7 +2,7 @@
 {
     public struct PredatorComponent
     {
-        public int Rapacity;
+        public float Rapacity;
         public float Predatoriness;
         public int PredatorExperience;
     }

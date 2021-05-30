@@ -5,6 +5,7 @@ using Jobs;
 using Leopotam.Ecs;
 using Unity.Burst;
 using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.Jobs;
 using UnityEngine;
 
@@ -17,47 +18,78 @@ namespace Systems
         
         public void Run()
         {
-            List<Vector3> personsPositions = new List<Vector3>();
-            List<EcsEntity> personsEntity = new List<EcsEntity>();
-            foreach (var person in _persons)
-            {
-                var entity = _persons.GetEntity(person);
-                personsPositions.Add(entity.Get<ViewComponent>().View.transform.position);
-                personsEntity.Add(entity);
-            }
+            NativeArray<Vector3> personsPositions =
+                new NativeArray<Vector3>(_persons.GetEntitiesCount(), Allocator.TempJob);
+            NativeArray<int> personsPredatorExperiences =
+                new NativeArray<int>(_persons.GetEntitiesCount(), Allocator.TempJob);
+            EcsEntity[] personsEntities = new EcsEntity[_persons.GetEntitiesCount()]; 
+            GetPersonsData(personsPositions, personsPredatorExperiences, personsEntities);
             
-            List<Vector3> foodPositions = new List<Vector3>();
-            foreach (var f in _food)
-            {
-                if (_food.Get2(f).View.activeSelf) foodPositions.Add(_food.Get2(f).View.transform.position);
-            }
+            NativeArray<Vector3> foodPositions = 
+                new NativeArray<Vector3>(_food.GetEntitiesCount(), Allocator.TempJob);
+            NativeArray<int> foodPredatorExperiences =
+                new NativeArray<int>(_food.GetEntitiesCount(), Allocator.TempJob);
+            GetFoodData(foodPredatorExperiences, foodPositions);
             
-            foodPositions = foodPositions.Where(x => !personsPositions.Contains(x)).ToList();
-            
-            List<Vector3> directions = FindNearest(personsPositions.ToNativeArray(Allocator.TempJob), foodPositions.ToNativeArray(Allocator.TempJob));
-            for (int i = 0; i < personsEntity.Count; i++)
+            List<Vector3> directions = FindNearest(personsPositions, personsPredatorExperiences, 
+                foodPositions, foodPredatorExperiences);
+            for (int i = 0; i < personsEntities.Length; i++)
             {
-                personsEntity[i].Get<MoveComponent>().Direction = directions[i];
+                personsEntities[i].Get<MoveComponent>().Direction = directions[i];
             }
         }
-        
-        private List<Vector3> FindNearest(NativeArray<Vector3> persons, NativeArray<Vector3> foodPositions)
+
+        private void GetFoodData(NativeArray<int> predatorExperiences, NativeArray<Vector3> foodPositions)
         {
-            NativeArray<Vector3> resultArray = new NativeArray<Vector3>(persons.Length, Allocator.TempJob);
-            var newJob = new FindNearestJob()
+            for (int i = 0; i < _food.GetEntitiesCount(); i++)
             {
-                PersonsPositions = persons,
-                FoodPosition = foodPositions,
+                int predatorExperienceValue = 0;
+                if (_food.GetEntity(i).Has<PredatorComponent>())
+                {
+                    predatorExperienceValue = _food.GetEntity(i).Get<PredatorComponent>().PredatorExperience;
+                }
+
+                if (!_food.Get2(i).View.activeSelf) predatorExperienceValue = -1;
+                predatorExperiences[i] = predatorExperienceValue;
+                foodPositions[i] = _food.Get2(i).View.transform.position;
+            }
+        }
+
+        private void GetPersonsData(NativeArray<Vector3> personsPositions,
+            NativeArray<int> predatorExperiences, EcsEntity[] personsEntity)
+        {
+            for (int i = 0; i < _persons.GetEntitiesCount(); i++)
+            {
+                personsPositions[i] = _persons.Get3(i).View.transform.position;
+                predatorExperiences[i] = _persons.Get1(i).PredatorExperience;
+                personsEntity[i] = _persons.GetEntity(i);
+            }
+        }
+
+        private List<Vector3> FindNearest(NativeArray<Vector3> personsPositions,
+            NativeArray<int> personPredatorExperiences, 
+            NativeArray<Vector3> foodPositions,
+            NativeArray<int> foodPredatorExperiences)
+        {
+            NativeArray<Vector3> resultArray = new NativeArray<Vector3>(personsPositions.Count(), Allocator.TempJob);
+            var newJob = new FindNearestAllJob()
+            {
+                PersonsPositions = personsPositions,
+                PersonsPredatorExperiences = personPredatorExperiences,
+                FoodPositions = foodPositions,
+                FoodPredatorExperiences = foodPredatorExperiences,
                 ResultDirections = resultArray
             };
 
-            JobHandle handle = newJob.Schedule(persons.Length, 6);
+            JobHandle handle = newJob.Schedule(personsPositions.Count(), 6);
             handle.Complete();
             List<Vector3> result = resultArray.ToList();
             
             resultArray.Dispose();
             foodPositions.Dispose();
-            persons.Dispose();
+            foodPredatorExperiences.Dispose();
+            personPredatorExperiences.Dispose();
+            personsPositions.Dispose();
 
             return result;
         }

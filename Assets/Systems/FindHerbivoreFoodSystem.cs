@@ -13,7 +13,7 @@ namespace Systems
     public class FindHerbivoreFoodSystem : IEcsRunSystem
     {
         private EcsFilter<HerbivoreСomponent,MoveComponent, ViewComponent>.Exclude<PredatorComponent> _persons;
-        private EcsFilter<FoodComponent, ViewComponent>.Exclude<PersonFoodComponent> _food;
+        private EcsFilter<FoodComponent, ViewComponent>.Exclude<MeatFoodComponent> _food;
 
         public void Run()
         {
@@ -21,22 +21,6 @@ namespace Systems
             List<EcsEntity> personsEntity = new List<EcsEntity>();
             foreach (var person in _persons)
             {
-                // if (_food.Get2(0).View == null)
-                // {
-                //     _persons.Get1(person).Direction = Vector3.zero;
-                //     continue;
-                // }
-                
-                // Vector3 position = _persons.Get2(person).View.transform.position;
-                // Vector3 nearestFood = new Vector3(0, int.MaxValue, 0);
-                
-                // foreach (var f in _food)
-                // {
-                //     if (_food.Get2(f).View.activeSelf && (_food.Get2(f).View.transform.position - position).sqrMagnitude <
-                //         (nearestFood - position).sqrMagnitude) nearestFood = _food.Get2(f).View.transform.position;
-                // }
-
-                //_persons.Get1(person).Direction = (nearestFood - position).normalized;
                 var entity = _persons.GetEntity(person);
                 personsPositions.Add(entity.Get<ViewComponent>().View.transform.position);
                 personsEntity.Add(entity);
@@ -58,7 +42,7 @@ namespace Systems
         private List<Vector3> FindNearest(NativeArray<Vector3> persons, NativeArray<Vector3> foodPositions)
         {
             NativeArray<Vector3> resultArray = new NativeArray<Vector3>(persons.Length, Allocator.TempJob);
-            var newJob = new FindNearestJob()
+            var newJob = new FindNearestPlantJob()
             {
                 PersonsPositions = persons,
                 FoodPosition = foodPositions,

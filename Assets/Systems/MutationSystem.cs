@@ -7,19 +7,37 @@ namespace Systems
     public class MutationSystem : IEcsRunSystem
     {
         private EcsFilter<BornComponent> _filter;
+        private EcsFilter<NoReplicateTimeComponent> _noReplicatetimers;
         private Configs _configs;
         
         
         public void Run()
         {
+            BecamePredator();
             foreach (var i in _filter)
             {
                 var entity = _filter.GetEntity(i);
                 SpeedMutation(entity);
                 //SizeMutation(entity);
-                PredatorMutation(entity);
                 PoisonousMutation(entity);
                 entity.Del<BornComponent>();
+            }
+        }
+
+        private void BecamePredator()
+        {
+            foreach (var timer in _noReplicatetimers)
+            {
+                if (_noReplicatetimers.Get1(timer).Time >= _configs.TimeToBecamePredator)
+                {
+                    var entity = _noReplicatetimers.GetEntity(timer);
+                    PredatorMutation(entity);
+                    entity.Del<NoReplicateTimeComponent>();
+                }
+                else
+                {
+                    _noReplicatetimers.Get1(timer).Time += Time.deltaTime;
+                }
             }
         }
 
@@ -61,17 +79,17 @@ namespace Systems
 
         private void PredatorMutation(EcsEntity entity)
         {
-            bool roll = Random.value < _configs.PredatorMutationChance / 100;
-            if (roll)
+            if (!entity.Has<PredatorComponent>())
             {
                 entity.Replace(new PredatorComponent
                 {
                     Rapacity = 0,
                     Predatoriness = .1f,
-                    PredatorExperience = 0
+                    PredatorExperience = 1
                 });
                 entity.Get<ViewComponent>().View.GetComponent<MeshRenderer>().material.color = Color.black;
-                entity.Get<PersonFoodComponent>().FoodAmount = 2 + _configs.PredatoryFoodNeed;
+                entity.Get<ViewComponent>().View.transform.GetChild(0).gameObject.SetActive(true);
+                entity.Replace(new FoodsAverage());
             }
         }
 
