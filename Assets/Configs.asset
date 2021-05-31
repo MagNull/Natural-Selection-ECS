@@ -37,6 +37,7 @@ MonoBehaviour:
   TimeToBecamePredator: 10
   KillsToBecameOnlyCarnivorous: 50
   RapacityPerKill: 0.05
+  ExperienceDeltaToEat: 20
   FoodPerPoisonous: 1
   PoisonousMutationFault: 0.2
   KillPoisonThreshold: 0.5

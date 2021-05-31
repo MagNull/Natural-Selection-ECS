@@ -17,6 +17,8 @@ namespace Jobs
         [ReadOnly] 
         public NativeArray<Vector3> FoodPositions;
 
+        [ReadOnly] public NativeArray<float> Delta;
+
         [ReadOnly] 
         public NativeArray<int> FoodPredatorExperiences;
 
@@ -31,7 +33,7 @@ namespace Jobs
             
             for (var i = 0; i < FoodPositions.Length; i++)
             {
-                if (personExperience > FoodPredatorExperiences[i]
+                if (personExperience - FoodPredatorExperiences[i] >= Delta[0]
                     && personPosition != FoodPositions[i]
                     && (personPosition - FoodPositions[i]).sqrMagnitude <
                     (personPosition - nearestFoodPosition).sqrMagnitude)

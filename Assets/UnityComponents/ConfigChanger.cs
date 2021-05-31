@@ -212,6 +212,20 @@ namespace UnityComponents
             }
         }
         
+        public void ChangePredatorEatDelta(TMP_InputField inputField)
+        {
+            try
+            {
+                CurrentConfigs.ExperienceDeltaToEat = float.Parse(inputField.text);
+                inputField.textComponent.color = Color.black;
+            }
+            catch
+            {
+                inputField.text = "Incorrect input";
+                inputField.textComponent.color = Color.red;
+            }
+        }
+        
         public void ChangeTimeToBecamePredator(TMP_InputField inputField)
         {
             try

@@ -22,7 +22,8 @@ namespace Systems.Eating_Systems
                     entity1.Has<PredatorComponent>())
                 {
                     if (!entity2.Has<PredatorComponent>() ||
-                        entity2.Get<PredatorComponent>().PredatorExperience < entity1.Get<PredatorComponent>().PredatorExperience)
+                        entity1.Get<PredatorComponent>().PredatorExperience - 
+                        entity2.Get<PredatorComponent>().PredatorExperience >= _configs.ExperienceDeltaToEat)
                     {
                         float foodValue = entity2.Get<FoodComponent>().NutritionalValue *
                                           entity1.Get<PredatorComponent>().Predatoriness;

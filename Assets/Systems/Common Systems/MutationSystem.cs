@@ -91,6 +91,8 @@ namespace Systems.Common_Systems
                 });
                 entity.Get<ViewComponent>().View.GetComponent<MeshRenderer>().material.color = Color.black;
                 entity.Get<ViewComponent>().View.transform.GetChild(0).gameObject.SetActive(true);
+                entity.Get<ViewComponent>().View.transform.GetChild(0).transform.localScale =
+                    Vector3.one * entity.Get<PredatorComponent>().Predatoriness;
                 entity.Replace(new FoodsAverage());
             }
         }

@@ -7,6 +7,7 @@ using Jobs;
 using Leopotam.Ecs;
 using Unity.Collections;
 using Unity.Jobs;
+using UnityComponents;
 using UnityEngine;
 
 namespace Systems.Find_Food_Systems
@@ -15,6 +16,7 @@ namespace Systems.Find_Food_Systems
     {
         private EcsFilter<PredatorComponent, HerbivoreСomponent, ViewComponent> _persons;
         private EcsFilter<FoodComponent, ViewComponent> _food;
+        private Configs _configs;
         
         public void Run()
         {
@@ -43,13 +45,13 @@ namespace Systems.Find_Food_Systems
         {
             for (int i = 0; i < _food.GetEntitiesCount(); i++)
             {
-                int predatorExperienceValue = 0;
+                int predatorExperienceValue = -1999999999;
                 if (_food.GetEntity(i).Has<PredatorComponent>())
                 {
                     predatorExperienceValue = _food.GetEntity(i).Get<PredatorComponent>().PredatorExperience;
                 }
 
-                if (!_food.Get2(i).View.activeSelf) predatorExperienceValue = -1;
+                if (!_food.Get2(i).View.activeSelf) predatorExperienceValue = -1999999999;
                 predatorExperiences[i] = predatorExperienceValue;
                 foodPositions[i] = _food.Get2(i).View.transform.position;
             }
@@ -72,12 +74,15 @@ namespace Systems.Find_Food_Systems
             NativeArray<int> foodPredatorExperiences)
         {
             NativeArray<Vector3> resultArray = new NativeArray<Vector3>(personsPositions.Count(), Allocator.TempJob);
+            NativeArray<float> delta = new NativeArray<float>(1, Allocator.TempJob);
+            delta[0] = _configs.ExperienceDeltaToEat;
             var newJob = new FindNearestAllJob()
             {
                 PersonsPositions = personsPositions,
                 PersonsPredatorExperiences = personPredatorExperiences,
                 FoodPositions = foodPositions,
                 FoodPredatorExperiences = foodPredatorExperiences,
+                Delta = delta,
                 ResultDirections = resultArray
             };
 
@@ -90,6 +95,7 @@ namespace Systems.Find_Food_Systems
             foodPredatorExperiences.Dispose();
             personPredatorExperiences.Dispose();
             personsPositions.Dispose();
+            delta.Dispose();
 
             return result;
         }

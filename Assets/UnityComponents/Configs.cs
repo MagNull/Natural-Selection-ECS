@@ -42,6 +42,7 @@ namespace UnityComponents
          public float TimeToBecamePredator;
          public float KillsToBecameOnlyCarnivorous;
          public float RapacityPerKill;
+         public float ExperienceDeltaToEat;
 
          [Header("Poisonous Mutation Configs")] 
          public float FoodPerPoisonous;
