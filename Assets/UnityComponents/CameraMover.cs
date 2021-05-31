@@ -1,36 +1,34 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMover : MonoBehaviour
+namespace UnityComponents
 {
-    [SerializeField] private float _speed;
-    [SerializeField] private float _sensitivity = 1;
-    [SerializeField] private float _boost;
-    private float _rotX;
-    private float _rotY;
-
-    private void Start()
+    public class CameraMover : MonoBehaviour
     {
-        _rotX = transform.rotation.x;
-        _rotY = transform.rotation.y;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
+        [SerializeField] private float _speed;
+        [SerializeField] private float _sensitivity = 1;
+        [SerializeField] private float _boost;
+        private float _rotX;
+        private float _rotY;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftShift)) _speed += _boost;
-        if (Input.GetKeyUp(KeyCode.LeftShift)) _speed -= _boost;
-        float moveX = Input.GetAxis("Horizontal") * _speed * Time.deltaTime;
-        float moveZ = Input.GetAxis("Vertical") * _speed * Time.deltaTime;
-        _rotY += Input.GetAxis("Mouse X") * _sensitivity;
-        _rotX -= Input.GetAxis("Mouse Y") * _sensitivity;
+        private void Start()
+        {
+            _rotX = transform.rotation.x;
+            _rotY = transform.rotation.y;
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.LeftShift)) _speed += _boost;
+            if (Input.GetKeyUp(KeyCode.LeftShift)) _speed -= _boost;
+            float moveX = Input.GetAxis("Horizontal") * _speed * Time.deltaTime;
+            float moveZ = Input.GetAxis("Vertical") * _speed * Time.deltaTime;
+            _rotY += Input.GetAxis("Mouse X") * _sensitivity;
+            _rotX -= Input.GetAxis("Mouse Y") * _sensitivity;
         
-        transform.rotation = Quaternion.Euler(_rotX, _rotY, 0);
+            transform.rotation = Quaternion.Euler(_rotX, _rotY, 0);
 
-        transform.position += transform.TransformDirection(new Vector3(moveX, 0, moveZ));
+            transform.position += transform.TransformDirection(new Vector3(moveX, 0, moveZ));
 
+        }
     }
 }

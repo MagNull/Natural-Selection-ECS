@@ -21,20 +21,18 @@ MonoBehaviour:
   PersonNutritionalValue: 2
   MutationChance: 10
   FoodPrefab: {fileID: 9185688396838771284, guid: 68b411f1b21a1924e9832d510a63b37f, type: 3}
-  FoodSpawnAmount: 300
-  FoodSpawnRate: 1
+  FoodSpawnAmount: 150
   NoneActiveStartFood: 500
-  DieTickRate: 1
+  AgingTickRate: 1
   ReplicateTickRate: 2
+  PlantMeatRatioCheckPeriod: 4
+  FoodSpawnRate: 1
   FoodSpeedCoefficient: 0.1
   SpeedMutationFault: 5
   SizeSpeedCoefficient: 2
   SizeMutationFault: 0.35
   FoodSizeCoefficient: 7
   SizeThresholdToEat: 1.2
-  PredatorMutationChance: 1
-  PredatoryFoodNeed: 3
-  PlantMeatRatioCheckPeriod: 4
   RatioToChangeRation: 2
   TimeToBecamePredator: 10
   KillsToBecameOnlyCarnivorous: 50
