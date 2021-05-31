@@ -25,5 +25,6 @@ Predatoriness - affects the nutritional value of meat and increases as the meat 
 As it eats meat, the creature can completely refuse to eat grass. This happens when the ratio of units of food obtained from grass to food obtained from meat is greater than or
 equal to a certain number (configurable). 
 
-### ECS Framework
+### Writed by:
 * LeoECS
+* Job System
