@@ -18,7 +18,7 @@ Also, each tick (the size is adjustable) takes away a certain amount of food fro
 When a creature cannot replicate for a certain period of time (configurable), it acquires the sign of predation. The incomplete predator continues to eat grass, but now it can 
 eat other individuals, but the meat will not yet have full nutritional value.
   Predators have such parameters as:
-* Rapacity - food consumption increases as you increase. Directly proportional to Predator Experience (configurable)
+* Rapacity - food consumption increases as you increase. Directly proportional to Predator Experience (configurable). Child inherits only half of rapacity when parent replicate.
 * Predator Experience - indicator that affects who an individual can eat. A predator can only eat individuals in which
 The Predator Experience is smaller than its own.
 * Predatoriness - affects the nutritional value of meat and increases as the meat is eaten from 0.1 to 1. To become an absolute predator, you need to eat the required number of
