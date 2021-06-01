@@ -21,7 +21,9 @@ eat other individuals, but the meat will not yet have full nutritional value.
 * Rapacity - food consumption increases as you increase. Directly proportional to Predator Experience (configurable)
 * Predator Experience - indicator that affects who an individual can eat. A predator can only eat individuals in which
 The Predator Experience is smaller than its own.
-* Predatoriness - affects the nutritional value of meat and increases as the meat is eaten from 0.1 to 1. To become an absolute predator, you need to eat the required number of other individuals (configurable)
+* Predatoriness - affects the nutritional value of meat and increases as the meat is eaten from 0.1 to 1. To become an absolute predator, you need to eat the required number of
+other individuals (configurable). 
+
 As it eats meat, the creature can completely refuse to eat grass. This happens when the ratio of units of food obtained from grass to food obtained from meat is greater than or
 equal to a certain number (configurable). 
 
