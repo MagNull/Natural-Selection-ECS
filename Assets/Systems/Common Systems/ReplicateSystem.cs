@@ -53,6 +53,7 @@ namespace Systems.Common_Systems
                         person.transform.GetChild(0).gameObject.SetActive(true);
                         person.transform.GetChild(0).localScale =
                             Vector3.one * entity.Get<PredatorComponent>().Predatoriness;
+                        entity.Get<PredatorComponent>().Rapacity /= 2;
                         entity.Get<PersonFoodComponent>().FoodAmount = 2 + entity.Get<PredatorComponent>().Rapacity;
                     }
                     else
