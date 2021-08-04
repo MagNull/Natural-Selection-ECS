@@ -1,6 +1,9 @@
 # Natural-Selection-ECS
 Simulation of natural selection with ECS 
 
+### Download
+https://ilovefish.itch.io/natural-selection
+
   The simulation is an environment with food that is periodically created on it and a certain number of creatures in it.  
 
 ## Mutation
